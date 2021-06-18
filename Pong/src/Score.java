@@ -5,7 +5,6 @@ import java.awt.*;
  instancia dois objeto deste tipo, cada um responsável por gerenciar a pontuação
  de um player, quando a execução é iniciada.
  */
-
 public class Score {
 
     /**
@@ -15,7 +14,7 @@ public class Score {
      */
 
     public Score(String playerId){
-
+        
     }
 
     /**
