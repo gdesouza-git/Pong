@@ -60,7 +60,9 @@ public class Player {
      */
 
     public void moveUp(long delta){
-        this.cy += 1.2*delta; 
+       if(cy<529){
+        this.cy += delta;
+       } 
     }
 
     /**
@@ -72,7 +74,9 @@ public class Player {
      */
 
     public void moveDown(long delta){
-        this.cy -=1.2*delta;
+        if(cy>170){ //Eu nao achei as variaveis que determinam o valor limite das paredes kkkkkkk, mas temos que mudar
+            this.cy -= delta;
+        }
     }
 
     /**
