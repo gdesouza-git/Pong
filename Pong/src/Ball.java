@@ -7,6 +7,13 @@ import java.awt.*;
 
 public class Ball {
 
+    private double cx;
+    private double cy;
+    private double width;
+    private double height;
+    private Color color;
+    private double speed;
+
     /**
      Construtor da classe Ball. Observe que quem invoca o construtor desta classe define a velocidade da bola
      (em pixels por millisegundo), mas não define a direção deste movimento. A direção do movimento é determinada
@@ -21,7 +28,12 @@ public class Ball {
      */
 
     public Ball(double cx, double cy, double width, double height, Color color, double speed){
-
+         this.cx = cx;
+         this.cy = cy;
+         this.width = width;
+         this.height = height;
+         this.color = color;
+         this.speed = speed;
     }
 
 
@@ -31,8 +43,8 @@ public class Ball {
 
     public void draw(){
 
-        GameLib.setColor(Color.ORANGE);
-        GameLib.fillRect(400, 300, 20, 20);
+        GameLib.setColor(color);
+        GameLib.fillRect(cx, cy, width, height);
     }
 
     /**
@@ -43,6 +55,8 @@ public class Ball {
 
     public void update(long delta){
 
+        cx -= delta;
+        //cy += delta;
     }
 
     /**
@@ -52,7 +66,7 @@ public class Ball {
      */
 
     public void onPlayerCollision(String playerId){
-
+        
     }
 
     /**
@@ -62,7 +76,7 @@ public class Ball {
      */
 
     public void onWallCollision(String wallId){
-
+        
     }
 
     /**
@@ -73,7 +87,7 @@ public class Ball {
      */
 
     public boolean checkCollision(Wall wall){
-
+        if(wall.getCx() == this.cx) return true;
         return false;
     }
 
@@ -85,8 +99,7 @@ public class Ball {
      */
 
     public boolean checkCollision(Player player){
-
-
+        if(player.getCx() == this.cx) return true;
         return false;
     }
 
@@ -97,7 +110,7 @@ public class Ball {
 
     public double getCx(){
 
-        return 400;
+        return cx;
     }
 
     /**
@@ -107,7 +120,7 @@ public class Ball {
 
     public double getCy(){
 
-        return 300;
+        return cy;
     }
 
     /**
@@ -118,7 +131,7 @@ public class Ball {
 
     public double getSpeed(){
 
-        return 0;
+        return speed;
     }
 
 }
