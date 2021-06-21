@@ -27,8 +27,8 @@ public class Score {
 
     public void draw(){
 
-        if (playerId == Pong.PLAYER1)GameLib.drawText(Integer.toString(score), 70, GameLib.ALIGN_LEFT);
-        if (playerId == Pong.PLAYER2)GameLib.drawText(Integer.toString(score), 70, GameLib.ALIGN_RIGHT);
+        if (playerId == Pong.PLAYER1) GameLib.drawText("Player 1: "+Integer.toString(score), 70.0D, GameLib.ALIGN_LEFT);
+        if (playerId == Pong.PLAYER2) GameLib.drawText("Player 2: "+Integer.toString(score), 70.0D, GameLib.ALIGN_RIGHT);
     }
 
     /**

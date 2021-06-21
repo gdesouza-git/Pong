@@ -54,9 +54,8 @@ public class Ball {
      */
 
     public void update(long delta){
-
         cx -= delta;
-        //cy += delta;
+        //cy -= delta;
     }
 
     /**
@@ -66,7 +65,11 @@ public class Ball {
      */
 
     public void onPlayerCollision(String playerId){
-        
+        /*
+        for (int i = 0; ;i++){
+            int g = i; //só pro compilador não ignorar o laço ao perceber que não faz nada
+        }
+        */
     }
 
     /**
@@ -76,7 +79,15 @@ public class Ball {
      */
 
     public void onWallCollision(String wallId){
-        
+        if(wallId.compareToIgnoreCase("left") == 0) GameLib.fillRect(300, 400, 9000, 9000);
+        if(wallId.compareToIgnoreCase("right") == 0) GameLib.fillRect(300, 400, 9000, 9000);
+        if(wallId.compareToIgnoreCase("top") == 0) GameLib.fillRect(300, 400, 9000, 9000);
+        if(wallId.compareToIgnoreCase("bottom") == 0) GameLib.fillRect(300, 400, 9000, 9000);
+        /*
+        for (int i = 0; ;i++){
+            int g = i; //só pro compilador não ignorar o laço ao perceber que não faz nada
+        }
+        */
     }
 
     /**
@@ -88,7 +99,7 @@ public class Ball {
 
     public boolean checkCollision(Wall wall){
         if(wall.getCx() == this.cx) return true;
-        return false;
+        else return false;
     }
 
     /**
@@ -99,8 +110,8 @@ public class Ball {
      */
 
     public boolean checkCollision(Player player){
-        if(player.getCx() == this.cx) return true;
-        return false;
+        if(this.cx == player.getCx() && this.cy >= player.getCy()-50 && this.cy <= player.getCy()+50) return true;
+        else return false;
     }
 
     /**

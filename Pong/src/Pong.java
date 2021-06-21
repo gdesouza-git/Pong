@@ -17,7 +17,6 @@ public class Pong {
         while(System.currentTimeMillis() < var0) {
             Thread.yield();
         }
-
     }
 
     private static Wall[] initWalls() {
