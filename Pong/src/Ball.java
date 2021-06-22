@@ -13,6 +13,9 @@ public class Ball {
     private double height;
     private Color color;
     private double speed;
+    private int xVal = 1;
+    private int yVal = -1;
+
 
     /**
      Construtor da classe Ball. Observe que quem invoca o construtor desta classe define a velocidade da bola
@@ -54,8 +57,10 @@ public class Ball {
      */
 
     public void update(long delta){
-        cx -= delta;
-        //cy -= delta;
+        
+        this.cx += xVal * speed * delta;
+        this.cy += yVal * speed * delta;
+        
     }
 
     /**
@@ -65,12 +70,10 @@ public class Ball {
      */
 
     public void onPlayerCollision(String playerId){
-        /*
-        for (int i = 0; ;i++){
-            int g = i; //só pro compilador não ignorar o laço ao perceber que não faz nada
+            xVal *= -1;
+            yVal *= -1;
         }
-        */
-    }
+    
 
     /**
      Método chamado quando detecta-se uma colisão da bola com uma parede.
@@ -79,15 +82,17 @@ public class Ball {
      */
 
     public void onWallCollision(String wallId){
-        if(wallId.compareToIgnoreCase("left") == 0) GameLib.fillRect(300, 400, 9000, 9000);
-        if(wallId.compareToIgnoreCase("right") == 0) GameLib.fillRect(300, 400, 9000, 9000);
-        if(wallId.compareToIgnoreCase("top") == 0) GameLib.fillRect(300, 400, 9000, 9000);
-        if(wallId.compareToIgnoreCase("bottom") == 0) GameLib.fillRect(300, 400, 9000, 9000);
-        /*
-        for (int i = 0; ;i++){
-            int g = i; //só pro compilador não ignorar o laço ao perceber que não faz nada
-        }
-        */
+
+        System.out.println(wallId);
+
+        if(wallId.compareToIgnoreCase("left") == 0) xVal *= -1;
+
+        if(wallId.compareToIgnoreCase("right") == 0) xVal *= -1;
+
+        if(wallId.compareToIgnoreCase("top") == 0) yVal *= -1;
+        
+        if(wallId.compareToIgnoreCase("bottom") == 0) yVal *= -1;
+        
     }
 
     /**
@@ -98,8 +103,36 @@ public class Ball {
      */
 
     public boolean checkCollision(Wall wall){
-        if(wall.getCx() == this.cx) return true;
-        else return false;
+
+        double wallb = cy - 10;
+        double wallt = cy + 10;
+
+        if(wall.getId().compareToIgnoreCase("top") == 0){
+            double aux = wall.getCy() + (wall.getHeight() / 2);
+            if(wallb <= aux) return true;
+        }
+
+        if(wall.getId().compareToIgnoreCase("bottom") == 0){
+            double aux = wall.getCy() - (wall.getHeight() / 2);
+            if(wallt >= aux) return true;
+        }
+
+        if(wall.getId().compareToIgnoreCase("left") == 0){
+			double ballLeft = cx - 10;
+			double wallRight = wall.getCx() + (wall.getWidth() / 2);
+
+			if(ballLeft <= wallRight) return true;
+			
+        }
+        if(wall.getId().compareToIgnoreCase("right") == 0){
+			double ballRight = cx + 10;
+			double wallLeft = wall.getCx() - (wall.getWidth() / 2);
+			
+			if(ballRight >= wallLeft) return true;
+			
+		}
+
+        return false;
     }
 
     /**
@@ -110,8 +143,26 @@ public class Ball {
      */
 
     public boolean checkCollision(Player player){
-        if(this.cx == player.getCx() && this.cy >= player.getCy()-50 && this.cy <= player.getCy()+50) return true;
-        else return false;
+
+        double ballTop = cy - 10;
+		double ballBottom = cy + 10;
+
+		double ballLeft = cx - 10;
+		double ballRight = cx + 10;
+
+		double playerTop = player.getCy() - 50;
+		double playerBottom = player.getCy() + 50;
+
+		double playerLeft = player.getCx() - 10;
+		double playerRight = player.getCx() + 10;
+
+
+		boolean rightColision = ballLeft <= playerRight;
+		boolean leftColision = ballRight >= playerLeft;
+
+		boolean isBallBetweenPlayerTopAndBottom = ballBottom >= playerTop && ballTop <= playerBottom;
+
+		return rightColision && leftColision && isBallBetweenPlayerTopAndBottom;
     }
 
     /**
@@ -120,7 +171,6 @@ public class Ball {
      */
 
     public double getCx(){
-
         return cx;
     }
 
@@ -130,7 +180,6 @@ public class Ball {
      */
 
     public double getCy(){
-
         return cy;
     }
 
@@ -141,7 +190,6 @@ public class Ball {
      */
 
     public double getSpeed(){
-
         return speed;
     }
 

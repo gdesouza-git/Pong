@@ -60,9 +60,9 @@ public class Player {
      */
 
     public void moveUp(long delta){
-        if(cy>v_limit[0]){
-            this.cy -= delta;
-       }
+
+		if(cy - 50 - delta > v_limit[0]) cy -= 0.8*delta;
+		else cy = v_limit[0] + 50;
     }
 
     /**
@@ -74,9 +74,9 @@ public class Player {
      */
 
     public void moveDown(long delta){
-        if(cy<v_limit[1]){
-            this.cy += delta;
-        }
+
+		if(cy + 50 + delta < v_limit[1]) cy += 0.8*delta; 
+		else cy = v_limit[1] - 50;
     }
 
     /**
