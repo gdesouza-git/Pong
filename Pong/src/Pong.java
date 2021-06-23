@@ -49,7 +49,7 @@ public class Pong {
             GameLib.initGraphics("Pong!", 800, 600);
         }
 
-        Ball var6 = new Ball(400.0D, 300.0D, 20.0D, 20.0D, Color.YELLOW, 0.65D);
+        Ball var6 = new Ball(400.0D, 300.0D, 20.0D, 20.0D, Color.YELLOW, 0.4D);
         Wall[] var7 = initWalls();
         Player[] var8 = initPlayers();
         Score[] var9 = initScores();

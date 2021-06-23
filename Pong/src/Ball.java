@@ -1,5 +1,4 @@
 import java.awt.*;
-
 /**
  Esta classe representa a bola usada no jogo. A classe princial do jogo (Pong)
  instancia um objeto deste tipo quando a execução é iniciada.
@@ -13,8 +12,8 @@ public class Ball {
     private double height;
     private Color color;
     private double speed;
-    private int xVal = 1;
-    private int yVal = -1;
+    private double xVal = 1;
+    private double yVal = -1;
 
 
     /**
@@ -58,8 +57,8 @@ public class Ball {
 
     public void update(long delta){
         
-        this.cx += xVal * speed * delta;
-        this.cy += yVal * speed * delta;
+        this.cx -= xVal * speed * delta;
+        this.cy -= yVal * speed * delta;
         
     }
 
@@ -71,7 +70,6 @@ public class Ball {
 
     public void onPlayerCollision(String playerId){
             xVal *= -1;
-            yVal *= -1;
         }
     
 
@@ -85,13 +83,19 @@ public class Ball {
 
         System.out.println(wallId);
 
-        if(wallId.compareToIgnoreCase("left") == 0) xVal *= -1;
 
-        if(wallId.compareToIgnoreCase("right") == 0) xVal *= -1;
+        if(wallId.compareToIgnoreCase("top") == 0){
+            if(yVal > 0) yVal *= -1;
+			
+		} else if(wallId.compareToIgnoreCase("bottom") == 0){
+            if(yVal < 0) yVal *= -1;
 
-        if(wallId.compareToIgnoreCase("top") == 0) yVal *= -1;
-        
-        if(wallId.compareToIgnoreCase("bottom") == 0) yVal *= -1;
+		} else if(wallId.compareToIgnoreCase("left") == 0){
+            if(xVal > 0) xVal *= -1;
+
+		} else if(wallId.compareToIgnoreCase("right") == 0){
+            if(xVal < 0) xVal *= -1;
+		}
         
     }
 
@@ -106,30 +110,29 @@ public class Ball {
 
         double wallb = cy - 10;
         double wallt = cy + 10;
+        double ballL = cx - 10;
+        double ballR = cx + 10; 
+        double aux;
 
         if(wall.getId().compareToIgnoreCase("top") == 0){
-            double aux = wall.getCy() + (wall.getHeight() / 2);
+            aux = wall.getCy() + (wall.getHeight() / 2);
             if(wallb <= aux) return true;
         }
 
         if(wall.getId().compareToIgnoreCase("bottom") == 0){
-            double aux = wall.getCy() - (wall.getHeight() / 2);
+            aux = wall.getCy() - (wall.getHeight() / 2);
             if(wallt >= aux) return true;
         }
 
         if(wall.getId().compareToIgnoreCase("left") == 0){
-			double ballLeft = cx - 10;
-			double wallRight = wall.getCx() + (wall.getWidth() / 2);
-
-			if(ballLeft <= wallRight) return true;
+			aux = wall.getCx() + (wall.getWidth() / 2);
+			if(ballL <= aux) return true;
 			
         }
+
         if(wall.getId().compareToIgnoreCase("right") == 0){
-			double ballRight = cx + 10;
-			double wallLeft = wall.getCx() - (wall.getWidth() / 2);
-			
-			if(ballRight >= wallLeft) return true;
-			
+			aux = wall.getCx() - (wall.getWidth() / 2);
+			if(ballR >= aux) return true;
 		}
 
         return false;
