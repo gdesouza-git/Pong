@@ -70,21 +70,13 @@ public class Ball {
 
     public void onPlayerCollision(String playerId){
         
+        if(temp == 1) return;
+        temp = 1;
+        
         System.out.println(playerId);
         
-        if (this.cx == -1) cx = 1;
-        
-        if (playerId.compareToIgnoreCase("player 1") == 0){
             if (xVal == -1) xVal = 1;
             else xVal = -1;
-        }
-
-        if (playerId.compareToIgnoreCase("player 2") == 0){
-            if (xVal == -1) xVal *= -1;
-            else xVal = -1;
-        }
-    
-        this.temp = xVal;
 
         }
     
@@ -97,6 +89,7 @@ public class Ball {
 
     public void onWallCollision(String wallId){
 
+        temp = 2;
         System.out.println(wallId);
         if(wallId.compareToIgnoreCase("top") == 0) yVal = -1;
 		else if(wallId.compareToIgnoreCase("bottom") == 0) yVal = 1;
@@ -161,8 +154,8 @@ public class Ball {
 		double ballRight = cx + 10;
 
         //Medidas do player
-		double playerTop = player.getCy() - 52;
-		double playerBottom = player.getCy() + 52;
+		double playerTop = player.getCy() - 50;
+		double playerBottom = player.getCy() + 50;
 		double playerLeft = player.getCx() - 10;
 		double playerRight = player.getCx() + 10;
 
