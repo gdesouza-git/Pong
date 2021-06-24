@@ -14,7 +14,7 @@ public class Ball {
     private double speed;
     private double xVal = 1;
     private double yVal = -1;
-
+    private double temp = 0;
 
     /**
      Construtor da classe Ball. Observe que quem invoca o construtor desta classe define a velocidade da bola
@@ -69,7 +69,23 @@ public class Ball {
      */
 
     public void onPlayerCollision(String playerId){
-            xVal *= -1;
+        
+        System.out.println(playerId);
+        
+        if (this.cx == -1) cx = 1;
+        
+        if (playerId.compareToIgnoreCase("player 1") == 0){
+            if (xVal == -1) xVal = 1;
+            else xVal = -1;
+        }
+
+        if (playerId.compareToIgnoreCase("player 2") == 0){
+            if (xVal == -1) xVal *= -1;
+            else xVal = -1;
+        }
+    
+        this.temp = xVal;
+
         }
     
 
@@ -82,20 +98,11 @@ public class Ball {
     public void onWallCollision(String wallId){
 
         System.out.println(wallId);
-
-
-        if(wallId.compareToIgnoreCase("top") == 0){
-            if(yVal > 0) yVal *= -1;
-			
-		} else if(wallId.compareToIgnoreCase("bottom") == 0){
-            if(yVal < 0) yVal *= -1;
-
-		} else if(wallId.compareToIgnoreCase("left") == 0){
-            if(xVal > 0) xVal *= -1;
-
-		} else if(wallId.compareToIgnoreCase("right") == 0){
-            if(xVal < 0) xVal *= -1;
-		}
+        if(wallId.compareToIgnoreCase("top") == 0) yVal = -1;
+		else if(wallId.compareToIgnoreCase("bottom") == 0) yVal = 1;
+		else if(wallId.compareToIgnoreCase("left") == 0) xVal = -1;
+		else if(wallId.compareToIgnoreCase("right") == 0) xVal = 1;
+		
         
     }
 
@@ -147,22 +154,21 @@ public class Ball {
 
     public boolean checkCollision(Player player){
 
+        //Medidas da bola
         double ballTop = cy - 10;
 		double ballBottom = cy + 10;
-
 		double ballLeft = cx - 10;
 		double ballRight = cx + 10;
 
-		double playerTop = player.getCy() - 50;
-		double playerBottom = player.getCy() + 50;
-
+        //Medidas do player
+		double playerTop = player.getCy() - 52;
+		double playerBottom = player.getCy() + 52;
 		double playerLeft = player.getCx() - 10;
 		double playerRight = player.getCx() + 10;
 
 
 		boolean rightColision = ballLeft <= playerRight;
 		boolean leftColision = ballRight >= playerLeft;
-
 		boolean isBallBetweenPlayerTopAndBottom = ballBottom >= playerTop && ballTop <= playerBottom;
 
 		return rightColision && leftColision && isBallBetweenPlayerTopAndBottom;
