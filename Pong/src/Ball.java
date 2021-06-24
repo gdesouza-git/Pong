@@ -72,13 +72,10 @@ public class Ball {
         
         if(temp == 1) return;
         temp = 1;
-        
-        System.out.println(playerId);
-        
-            if (xVal == -1) xVal = 1;
-            else xVal = -1;
 
-        }
+        xVal *= -1;
+
+    }
     
 
     /**
@@ -90,7 +87,6 @@ public class Ball {
     public void onWallCollision(String wallId){
 
         temp = 2;
-        System.out.println(wallId);
         if(wallId.compareToIgnoreCase("top") == 0) yVal = -1;
 		else if(wallId.compareToIgnoreCase("bottom") == 0) yVal = 1;
 		else if(wallId.compareToIgnoreCase("left") == 0) xVal = -1;
@@ -108,32 +104,37 @@ public class Ball {
 
     public boolean checkCollision(Wall wall){
 
+        double aux = 0;
+
+        //Medidas paredes:
         double wallb = cy - 10;
         double wallt = cy + 10;
+
+        //Medidas bola:
         double ballL = cx - 10;
         double ballR = cx + 10; 
-        double aux;
-
-        if(wall.getId().compareToIgnoreCase("top") == 0){
-            aux = wall.getCy() + (wall.getHeight() / 2);
-            if(wallb <= aux) return true;
-        }
-
-        if(wall.getId().compareToIgnoreCase("bottom") == 0){
-            aux = wall.getCy() - (wall.getHeight() / 2);
-            if(wallt >= aux) return true;
-        }
+        
 
         if(wall.getId().compareToIgnoreCase("left") == 0){
-			aux = wall.getCx() + (wall.getWidth() / 2);
+			aux = wall.getCx() + (wall.getWidth()/2);
 			if(ballL <= aux) return true;
 			
         }
 
         if(wall.getId().compareToIgnoreCase("right") == 0){
-			aux = wall.getCx() - (wall.getWidth() / 2);
+			aux = wall.getCx() - (wall.getWidth()/2);
 			if(ballR >= aux) return true;
 		}
+
+        if(wall.getId().compareToIgnoreCase("top") == 0){
+            aux = wall.getCy() + (wall.getHeight()/2);
+            if(wallb <= aux) return true;
+        }
+
+        if(wall.getId().compareToIgnoreCase("bottom") == 0){
+            aux = wall.getCy() - (wall.getHeight()/2);
+            if(wallt >= aux) return true;
+        }
 
         return false;
     }
@@ -147,24 +148,21 @@ public class Ball {
 
     public boolean checkCollision(Player player){
 
-        //Medidas da bola
-        double ballTop = cy - 10;
-		double ballBottom = cy + 10;
-		double ballLeft = cx - 10;
-		double ballRight = cx + 10;
-
         //Medidas do player
-		double playerTop = player.getCy() - 50;
-		double playerBottom = player.getCy() + 50;
-		double playerLeft = player.getCx() - 10;
-		double playerRight = player.getCx() + 10;
+        double pTop = player.getCy() - 50;
+        double pBottom = player.getCy() + 50;
+        double pLeft = player.getCx() - 10;
+        double pRight = player.getCx() + 10;
+
+        //Medidas da bola
+        double bTop = cy - 10;
+		double bBottom = cy + 10;
+		double bLeft = cx - 10;
+		double bRight = cx + 10;
 
 
-		boolean rightColision = ballLeft <= playerRight;
-		boolean leftColision = ballRight >= playerLeft;
-		boolean isBallBetweenPlayerTopAndBottom = ballBottom >= playerTop && ballTop <= playerBottom;
-
-		return rightColision && leftColision && isBallBetweenPlayerTopAndBottom;
+		if(bLeft > pRight || bRight < pLeft) return false;
+        return (bBottom >= pTop && bTop <= pBottom);
     }
 
     /**
