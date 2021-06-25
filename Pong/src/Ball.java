@@ -12,9 +12,9 @@ public class Ball {
     private double height;
     private Color color;
     private double speed;
-    private double xVal = 1;
-    private double yVal = -1;
-    private double temp = 0;
+    private double xVal;
+    private double yVal;
+    private boolean temp;
 
     /**
      Construtor da classe Ball. Observe que quem invoca o construtor desta classe define a velocidade da bola
@@ -27,6 +27,9 @@ public class Ball {
      @param height altura do retangulo que representa a bola.
      @param color cor da bola.
      @param speed velocidade da bola (em pixels por millisegundo).
+     @param xVal determina se x é positivo ou negativo, modificando sua direção.
+     @param yVal determina se y é positivo ou negativo, modificando sua direção.
+     @param temp informa se o método onPlayerCollision foi o último método a ser invocado em relação a onWallCollision.
      */
 
     public Ball(double cx, double cy, double width, double height, Color color, double speed){
@@ -36,6 +39,9 @@ public class Ball {
          this.height = height;
          this.color = color;
          this.speed = speed;
+         this.xVal = 1;
+         this.yVal = -1;
+         this.temp = false;
     }
 
 
@@ -57,8 +63,8 @@ public class Ball {
 
     public void update(long delta){
         
-        this.cx -= xVal * speed * delta;
-        this.cy -= yVal * speed * delta;
+        this.cx -= xVal * speed * delta * 0.7;
+        this.cy -= yVal * speed * delta * 0.7;
         
     }
 
@@ -70,10 +76,10 @@ public class Ball {
 
     public void onPlayerCollision(String playerId){
         
-        if(temp == 1) return;
-        temp = 1;
+        if(temp) return;
+        temp = true;
 
-        xVal *= -1;
+        xVal *= -1; //Muda direção de x.
 
     }
     
@@ -86,7 +92,7 @@ public class Ball {
 
     public void onWallCollision(String wallId){
 
-        temp = 2;
+        temp = false;
         if(wallId.compareToIgnoreCase("top") == 0) yVal = -1;
 		else if(wallId.compareToIgnoreCase("bottom") == 0) yVal = 1;
 		else if(wallId.compareToIgnoreCase("left") == 0) xVal = -1;
@@ -116,24 +122,24 @@ public class Ball {
         
 
         if(wall.getId().compareToIgnoreCase("left") == 0){
-			aux = wall.getCx() + (wall.getWidth()/2);
-			if(ballL <= aux) return true;
+            aux = wall.getCx() + (wall.getWidth()/2);
+            return(aux >= ballL);
 			
         }
 
         if(wall.getId().compareToIgnoreCase("right") == 0){
-			aux = wall.getCx() - (wall.getWidth()/2);
-			if(ballR >= aux) return true;
+            aux = wall.getCx() - (wall.getWidth()/2);
+            return(aux <= ballR);
 		}
 
         if(wall.getId().compareToIgnoreCase("top") == 0){
             aux = wall.getCy() + (wall.getHeight()/2);
-            if(wallb <= aux) return true;
+            return(aux >= wallb);
         }
 
         if(wall.getId().compareToIgnoreCase("bottom") == 0){
             aux = wall.getCy() - (wall.getHeight()/2);
-            if(wallt >= aux) return true;
+            return(aux <= wallt);
         }
 
         return false;
@@ -162,7 +168,8 @@ public class Ball {
 
 
 		if(bLeft > pRight || bRight < pLeft) return false;
-        return (bBottom >= pTop && bTop <= pBottom);
+        else if(bBottom >= pTop && bTop <= pBottom) return true;
+        return false;
     }
 
     /**
